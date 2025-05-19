@@ -10,8 +10,7 @@
 # See /LICENSE for more information.
 #
 
-name: OpenWrt Builder
-
+name: lede-coolsnowwolf
 on:
   repository_dispatch:
   workflow_dispatch:
@@ -26,7 +25,7 @@ env:
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
-  TZ: Asia/Shanghai
+  TZ: Asia/Kuala Lumpur
 
 jobs:
   build:
