@@ -10,7 +10,7 @@
 # See /LICENSE for more information.
 #
 
-name: lede-coolsnowwolf
+name: ledewrt
 on:
   repository_dispatch:
   workflow_dispatch:
