@@ -11,9 +11,6 @@
 #
 
 name: LedeWRT
-on:
-  repository_dispatch:
-  workflow_dispatch:
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
@@ -138,9 +135,8 @@ jobs:
     - name: Upload firmware to release
       uses: softprops/action-gh-release@v2
       if: steps.tag.outputs.status == 'success' && !cancelled()
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
+        token: ${{ secrets.GITHUB_TOKEN }}
         tag_name: ${{ steps.tag.outputs.release_tag }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
@@ -155,6 +151,7 @@ jobs:
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@v2
       with:
+        token: ${{ secrets.GITHUB_TOKEN }}
         retain_days: 0
         keep_minimum_runs: 2
 
@@ -162,7 +159,6 @@ jobs:
       uses: dev-drprasad/delete-older-releases@v0.3.3
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
+        token: ${{ secrets.GITHUB_TOKEN }}
         keep_latest: 3
         delete_tags: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
