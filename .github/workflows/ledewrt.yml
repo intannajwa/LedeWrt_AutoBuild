@@ -73,7 +73,6 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
-    # --------- CACHE STEP ---------
     - name: Cache package downloads
       uses: actions/cache@v4
       id: cacheHash
@@ -82,9 +81,7 @@ jobs:
         key: ${{ runner.os }}-openwrt-dl-${{ hashFiles('openwrt/.config') }}
         restore-keys: |
           ${{ runner.os }}-openwrt-dl-
-    # --------- END CACHE STEP ---------
 
-    # --------- TRIGGER BUILD ON CACHE MISS ---------
     - name: Trigger build
       if: steps.cacheHash.outputs.cache-hit != 'true'
       uses: peter-evans/repository-dispatch@v3
@@ -92,7 +89,6 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         event-type: Source Code Update
         client-payload: '{"build_trigger": "cache_miss", "time": "${{ github.run_id }}"}'
-    # --------- END TRIGGER BUILD ON CACHE MISS ---------
 
     - name: Download package
       id: package
@@ -154,10 +150,11 @@ jobs:
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Upload firmware to release
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@master
       if: steps.tag.outputs.status == 'success' && !cancelled()
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
         tag_name: ${{ steps.tag.outputs.release_tag }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
@@ -172,14 +169,14 @@ jobs:
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@v2
       with:
-        env: ${{ secrets.GITHUB_TOKEN }}
         retain_days: 0
         keep_minimum_runs: 2
 
     - name: Remove old Releases
-      uses: dev-drprasad/delete-older-releases@v0.3.3
+      uses: dev-drprasad/delete-older-releases@master
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        env: ${{ secrets.GITHUB_TOKEN }}
         keep_latest: 3
         delete_tags: true
