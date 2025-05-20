@@ -9,7 +9,7 @@
 # See /LICENSE for more information.
 ---
 
-name: LedeWRT1
+name: LedeWRT
 
 on:
   repository_dispatch:
