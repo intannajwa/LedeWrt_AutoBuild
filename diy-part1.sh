@@ -15,5 +15,6 @@
 
 # Add a feed source
 echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
-echo 'src-git custompackage https://github.com/intannajwa/custom-package.git' >>feeds.conf.default
-#echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
+echo 'src-git custom_app https://github.com/xBinPDA/custom-app.git;main' >>feeds.conf.default
+echo 'src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main' >>feeds.conf.default
+echo 'src-git passwall https://github.com/xBinPDA/openwrt-passwall.git;luci-nodns' >>feeds.conf.default
